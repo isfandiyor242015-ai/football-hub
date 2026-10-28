@@ -1,0 +1,373 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10151d">
+  <title>Football Hub | The Beautiful Game</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 85px;
+    }
+
+    body {
+      background: #10151d;
+      color: #f5f7fa;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #151c26;
+      border-bottom: 1px solid #293341;
+      padding: 16px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      color: #b7f34a;
+      font-size: 22px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #d5dbe4;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    nav a:hover {
+      color: #b7f34a;
+    }
+
+    .hero {
+      min-height: 440px;
+      padding: 90px 8%;
+      display: flex;
+      align-items: center;
+      background:
+        linear-gradient(90deg, #10151d 10%, #10151ddd 55%, #10151d66),
+        url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1600&q=85")
+        center/cover;
+    }
+
+    .hero-content {
+      max-width: 650px;
+    }
+
+    .tag {
+      color: #b7f34a;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 3px;
+    }
+
+    h1 {
+      font-size: clamp(38px, 6vw, 68px);
+      line-height: 1.1;
+      margin: 16px 0;
+    }
+
+    .hero p {
+      color: #c0c8d4;
+      max-width: 520px;
+      margin-bottom: 26px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 20px;
+      background: #b7f34a;
+      color: #10151d;
+      border-radius: 7px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: #d0ff7a;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: white;
+      border: 1px solid #566170;
+      margin-left: 8px;
+    }
+
+    .btn-outline:hover {
+      background: #252e3a;
+      color: white;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 55px 22px;
+    }
+
+    .section-title {
+      font-size: 29px;
+      margin-bottom: 8px;
+    }
+
+    .section-description {
+      color: #9da9b9;
+      margin-bottom: 25px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: #19212c;
+      border: 1px solid #2b3543;
+      border-radius: 13px;
+      padding: 23px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #b7f34a;
+    }
+
+    .club-icon {
+      font-size: 37px;
+      margin-bottom: 10px;
+    }
+
+    .card h3 {
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: #aab5c4;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .card a {
+      color: #b7f34a;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .info-panel {
+      background: #19212c;
+      border: 1px solid #2b3543;
+      border-radius: 13px;
+      padding: 28px;
+      margin-top: 20px;
+    }
+
+    .info-panel p {
+      color: #b6c0cd;
+      margin-top: 10px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 28px 15px;
+      color: #8e9aab;
+      border-top: 1px solid #293341;
+      font-size: 14px;
+    }
+
+    @media (max-width: 650px) {
+      header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      nav {
+        gap: 12px;
+      }
+
+      .hero {
+        min-height: 380px;
+        padding: 65px 7%;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .btn {
+        margin: 5px 0;
+      }
+
+      .btn-outline {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <a class="logo" href="#home">⚽ FOOTBALL HUB</a>
+
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#clubs">Clubs</a>
+      <a href="#competitions">Competitions</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <span class="tag">YOUR WORLD OF FOOTBALL</span>
+        <h1>Football Lives Here.</h1>
+        <p>
+          Discover legendary clubs, explore famous competitions
+          and celebrate the world's most popular sport.
+        </p>
+        <a class="btn" href="#clubs">Explore Clubs →</a>
+        <a class="btn btn-outline" href="#competitions">Competitions</a>
+      </div>
+    </section>
+
+    <section class="container" id="clubs">
+      <h2 class="section-title">Popular Football Clubs</h2>
+      <p class="section-description">
+        Discover some of the biggest names in world football.
+        Select a club to learn more.
+      </p>
+
+      <div class="cards">
+        <article class="card">
+          <div class="club-icon">⚪</div>
+          <h3>Real Madrid</h3>
+          <p>A Spanish club famous for its European success
+          and legendary players.</p>
+          <a href="#real-madrid">Learn More →</a>
+        </article>
+
+        <article class="card">
+          <div class="club-icon">🔵🔴</div>
+          <h3>FC Barcelona</h3>
+          <p>A Spanish club known for its distinctive playing
+          style and famous academy.</p>
+          <a href="#barcelona">Learn More →</a>
+        </article>
+
+        <article class="card">
+          <div class="club-icon">🔷</div>
+          <h3>Manchester City</h3>
+          <p>An English club known for its modern football
+          and domestic achievements.</p>
+          <a href="#man-city">Learn More →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="container" id="competitions">
+      <h2 class="section-title">Major Competitions</h2>
+      <p class="section-description">
+        Explore famous tournaments from around the world.
+      </p>
+
+      <div class="cards">
+        <article class="card">
+          <div class="club-icon">🏆</div>
+          <h3>UEFA Champions League</h3>
+          <p>A major European competition for top club teams.</p>
+        </article>
+
+        <article class="card">
+          <div class="club-icon">🌍</div>
+          <h3>FIFA World Cup</h3>
+          <p>The international tournament featuring national teams.</p>
+        </article>
+
+        <article class="card">
+          <div class="club-icon">🥇</div>
+          <h3>Premier League</h3>
+          <p>One of the most widely followed domestic leagues.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="container" id="about">
+      <h2 class="section-title">About Football Hub</h2>
+      <div class="info-panel">
+        <p>
+          Football Hub is a fan-made website dedicated to the
+          beautiful game. Here you can discover clubs, learn
+          about competitions and explore football history.
+        </p>
+      </div>
+    </section>
+
+    <section class="container" id="real-madrid">
+      <div class="info-panel">
+        <h2>⚪ Real Madrid</h2>
+        <p>
+          Based in Madrid, Spain, Real Madrid is one of the
+          world's best-known football clubs. Its home stadium
+          is the Santiago Bernabéu.
+        </p>
+        <p><a class="btn" href="#clubs">← Back to Clubs</a></p>
+      </div>
+    </section>
+
+    <section class="container" id="barcelona">
+      <div class="info-panel">
+        <h2>🔵🔴 FC Barcelona</h2>
+        <p>
+          FC Barcelona is based in Barcelona, Spain. The club
+          is known for its youth academy, La Masia, and its
+          long footballing history.
+        </p>
+        <p><a class="btn" href="#clubs">← Back to Clubs</a></p>
+      </div>
+    </section>
+
+    <section class="container" id="man-city">
+      <div class="info-panel">
+        <h2>🔷 Manchester City</h2>
+        <p>
+          Manchester City is an English football club based
+          in Manchester. Its home ground is the Etihad Stadium.
+        </p>
+        <p><a class="btn" href="#clubs">← Back to Clubs</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>⚽ FOOTBALL HUB</p>
+    <p>Made by a football fan | © 2026</p>
+  </footer>
+
+</body>
+</html>
