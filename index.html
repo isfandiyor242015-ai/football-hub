@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,7 +49,7 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      background: rgba(11, 16, 24, 0.94);
+      background: rgba(11, 16, 24, 0.96);
       border-bottom: 1px solid var(--border);
       backdrop-filter: blur(12px);
     }
@@ -71,7 +70,9 @@
       letter-spacing: -1px;
     }
 
-    .logo span {
+    .logo span,
+    h1 span,
+    .accent {
       color: var(--lime);
     }
 
@@ -98,8 +99,7 @@
     }
 
     .hero-content {
-      padding-top: 65px;
-      padding-bottom: 65px;
+      padding: 65px 0;
       max-width: 760px;
     }
 
@@ -123,10 +123,6 @@
       margin-bottom: 22px;
     }
 
-    h1 span {
-      color: var(--lime);
-    }
-
     .hero p {
       color: var(--muted);
       max-width: 590px;
@@ -141,12 +137,11 @@
       font-weight: bold;
       padding: 13px 22px;
       border-radius: 8px;
-      transition: transform 0.2s, background 0.2s;
+      transition: transform 0.2s;
     }
 
     .button:hover {
       transform: translateY(-2px);
-      background: #ceff78;
     }
 
     .button.secondary {
@@ -179,11 +174,8 @@
       font-size: 14px;
     }
 
-    .accent {
-      color: var(--lime);
-    }
-
-    .grid {
+    .grid,
+    .competition-list {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 20px;
@@ -233,19 +225,12 @@
       padding: 5px 9px;
       font-size: 11px;
       font-weight: bold;
-      letter-spacing: 0.5px;
     }
 
     .competitions {
       background: #0e141e;
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-    }
-
-    .competition-list {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
     }
 
     .competition {
@@ -287,7 +272,8 @@
       margin-bottom: 20px;
     }
 
-    select, .refresh-button {
+    select,
+    .refresh-button {
       background: var(--panel2);
       color: var(--text);
       border: 1px solid var(--border);
@@ -334,11 +320,11 @@
       font-weight: bold;
     }
 
-    .match-teams .home {
+    .home {
       text-align: right;
     }
 
-    .match-teams .away {
+    .away {
       text-align: left;
     }
 
@@ -399,7 +385,8 @@
     }
 
     @media (max-width: 760px) {
-      .grid, .competition-list {
+      .grid,
+      .competition-list {
         grid-template-columns: 1fr;
       }
 
@@ -518,50 +505,27 @@
         <div class="competition-list">
           <div class="competition">
             <span class="competition-icon">🏆</span>
-            <div>
-              <strong>Premier League</strong>
-              <small>England</small>
-            </div>
+            <div><strong>Premier League</strong><small>England</small></div>
           </div>
-
           <div class="competition">
             <span class="competition-icon">⭐</span>
-            <div>
-              <strong>Champions League</strong>
-              <small>Europe</small>
-            </div>
+            <div><strong>Champions League</strong><small>Europe</small></div>
           </div>
-
           <div class="competition">
             <span class="competition-icon">🇪🇸</span>
-            <div>
-              <strong>La Liga</strong>
-              <small>Spain</small>
-            </div>
+            <div><strong>La Liga</strong><small>Spain</small></div>
           </div>
-
           <div class="competition">
             <span class="competition-icon">🇩🇪</span>
-            <div>
-              <strong>Bundesliga</strong>
-              <small>Germany</small>
-            </div>
+            <div><strong>Bundesliga</strong><small>Germany</small></div>
           </div>
-
           <div class="competition">
             <span class="competition-icon">🇮🇹</span>
-            <div>
-              <strong>Serie A</strong>
-              <small>Italy</small>
-            </div>
+            <div><strong>Serie A</strong><small>Italy</small></div>
           </div>
-
           <div class="competition">
             <span class="competition-icon">🇫🇷</span>
-            <div>
-              <strong>Ligue 1</strong>
-              <small>France</small>
-            </div>
+            <div><strong>Ligue 1</strong><small>France</small></div>
           </div>
         </div>
       </div>
@@ -582,7 +546,7 @@
             <div>
               <strong>Football matches</strong>
               <div style="color: var(--muted); font-size: 13px;">
-                Data loads from matches.json when available.
+                Demo matches are shown without an API.
               </div>
             </div>
 
@@ -604,9 +568,7 @@
           </div>
 
           <div id="matches" class="match-list">
-            <div class="message">
-              Loading match schedule…
-            </div>
+            <div class="message">Loading match schedule…</div>
           </div>
         </div>
       </div>
@@ -620,8 +582,8 @@
           <p>
             FOOTBALL HUB is a football fan website created to explore
             famous clubs, major competitions, fixtures and results.
-            The website can display automatic match data when a valid
-            matches.json file is connected.
+            Demo fixtures are included. You can edit the matches
+            in the JavaScript section of this file.
           </p>
         </div>
       </div>
@@ -640,18 +602,50 @@
     const competitionFilter = document.getElementById("competitionFilter");
     const refreshButton = document.getElementById("refreshMatches");
 
-    let allMatches = [];
-
-    const competitionNames = {
-      PL: "Premier League",
-      PD: "La Liga",
-      BL1: "Bundesliga",
-      SA: "Serie A",
-      FL1: "Ligue 1",
-      CL: "Champions League",
-      WC: "World Cup",
-      EC: "European Championship"
-    };
+    const allMatches = [
+      {
+        homeTeam: "Real Madrid",
+        awayTeam: "Barcelona",
+        date: "2026-11-01T20:00:00Z",
+        competition: "La Liga",
+        status: "DEMO MATCH"
+      },
+      {
+        homeTeam: "Manchester City",
+        awayTeam: "Arsenal",
+        date: "2026-11-02T17:30:00Z",
+        competition: "Premier League",
+        status: "DEMO MATCH"
+      },
+      {
+        homeTeam: "Liverpool",
+        awayTeam: "Chelsea",
+        date: "2026-11-03T19:00:00Z",
+        competition: "Premier League",
+        status: "DEMO MATCH"
+      },
+      {
+        homeTeam: "Bayern Munich",
+        awayTeam: "Borussia Dortmund",
+        date: "2026-11-04T18:30:00Z",
+        competition: "Bundesliga",
+        status: "DEMO MATCH"
+      },
+      {
+        homeTeam: "Paris Saint-Germain",
+        awayTeam: "Marseille",
+        date: "2026-11-05T20:00:00Z",
+        competition: "Ligue 1",
+        status: "DEMO MATCH"
+      },
+      {
+        homeTeam: "Inter Milan",
+        awayTeam: "AC Milan",
+        date: "2026-11-06T19:45:00Z",
+        competition: "Serie A",
+        status: "DEMO MATCH"
+      }
+    ];
 
     function escapeHTML(value) {
       return String(value ?? "").replace(/[&<>"']/g, function (char) {
@@ -666,8 +660,6 @@
     }
 
     function formatDate(value) {
-      if (!value) return "Date unavailable";
-
       const date = new Date(value);
 
       if (Number.isNaN(date.getTime())) {
@@ -687,111 +679,39 @@
       const selected = competitionFilter.value;
 
       const filtered = allMatches.filter(function (match) {
-        const name =
-          match.competition?.name ||
-          competitionNames[match.competition?.code] ||
-          match.competitionName ||
-          "Other competition";
-
-        return selected === "all" || name === selected;
+        return selected === "all" || match.competition === selected;
       });
 
       if (filtered.length === 0) {
         matchesContainer.innerHTML =
-          '<div class="message">' +
-          'No matches found for this filter. ' +
-          'Check back later or connect the football data API.' +
-          '</div>';
+          '<div class="message">No matches for this competition.</div>';
         return;
       }
 
       matchesContainer.innerHTML = filtered.map(function (match) {
-        const home = match.homeTeam?.name || match.homeTeam || "Home team";
-        const away = match.awayTeam?.name || match.awayTeam || "Away team";
-
-        const competition =
-          match.competition?.name ||
-          competitionNames[match.competition?.code] ||
-          match.competitionName ||
-          "Football";
-
-        const status = match.status || "SCHEDULED";
-        const scoreData = match.score?.fullTime || match.score || {};
-
-        let score = "VS";
-
-        if (
-          scoreData.home !== undefined &&
-          scoreData.away !== undefined &&
-          scoreData.home !== null &&
-          scoreData.away !== null
-        ) {
-          score = scoreData.home + " - " + scoreData.away;
-        }
-
         return `
           <article class="match">
             <div class="match-meta">
-              <span>${escapeHTML(competition)}</span>
-              <span>${escapeHTML(formatDate(match.utcDate || match.date))}</span>
+              <span>${escapeHTML(match.competition)}</span>
+              <span>${escapeHTML(formatDate(match.date))}</span>
             </div>
+
             <div class="match-teams">
-              <span class="home">${escapeHTML(home)}</span>
-              <span class="score">${escapeHTML(score)}</span>
-              <span class="away">${escapeHTML(away)}</span>
+              <span class="home">${escapeHTML(match.homeTeam)}</span>
+              <span class="score">VS</span>
+              <span class="away">${escapeHTML(match.awayTeam)}</span>
             </div>
-            <span class="status">${escapeHTML(status.replaceAll("_", " "))}</span>
+
+            <span class="status">${escapeHTML(match.status)}</span>
           </article>
         `;
       }).join("");
     }
 
-    async function loadMatches() {
-      matchesContainer.innerHTML =
-        '<div class="message">Loading match schedule…</div>';
-
-      try {
-        const response = await fetch("./matches.json?t=" + Date.now(), {
-          cache: "no-store"
-        });
-
-        if (!response.ok) {
-          throw new Error("Match data file is not available yet.");
-        }
-
-        const data = await response.json();
-
-        allMatches = Array.isArray(data)
-          ? data
-          : Array.isArray(data.matches)
-            ? data.matches
-            : [];
-
-        if (allMatches.length === 0) {
-          matchesContainer.innerHTML =
-            '<div class="message">' +
-            'No matches are available yet. Connect the API and generate matches.json.' +
-            '</div>';
-          return;
-        }
-
-        renderMatches();
-      } catch (error) {
-        allMatches = [];
-
-        matchesContainer.innerHTML =
-          '<div class="message">' +
-          '<strong>Match data is not connected yet.</strong><br>' +
-          'The rest of the website works, but automatic fixtures need ' +
-          'a matches.json file generated from a football data API.' +
-          '</div>';
-      }
-    }
-
     competitionFilter.addEventListener("change", renderMatches);
-    refreshButton.addEventListener("click", loadMatches);
+    refreshButton.addEventListener("click", renderMatches);
 
-    loadMatches();
+    renderMatches();
   </script>
 </body>
 </html>
