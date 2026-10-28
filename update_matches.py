@@ -3,72 +3,30 @@ import json
 import os
 import urllib.request
 import urllib.error
-from datetime import date, timedelta, timezone, datetime
 
-TOKEN = os.environ["FOOTBALL_API_TOKEN"]
+token = os.environ.get("FOOTBALL_API_TOKEN")
 
-# Основные турниры, доступность зависит от тарифа API.
-COMPETITIONS = {
-    "PL": "Premier League",
-    "PD": "La Liga",
-    "BL1": "Bundesliga",
-    "SA": "Serie A",
-    "FL1": "Ligue 1",
-    "CL": "Champions League",
-    "WC": "World Cup",
-    "EC": "European Championship",
-}
+if not token:
+    raise RuntimeError("FOOTBALL_API_TOKEN is missing.")
 
-today = date.today()
-date_from = today - timedelta(days=7)
-date_to = today + timedelta(days=14)
+url = "https://api.football-data.org/v4/competitions"
 
-all_matches = []
+request = urllib.request.Request(
+    url,
+    headers={"X-Auth-Token": token}
+)
 
-for code, name in COMPETITIONS.items():
-    url = (
-        f"https://api.football-data.org/v4/competitions/{code}/matches"
-        f"?dateFrom={date_from}&dateTo={date_to}"
-    )
+try:
+    with urllib.request.urlopen(request, timeout=30) as response:
+        data = json.loads(response.read().decode("utf-8"))
 
-    request = urllib.request.Request(
-        url,
-        headers={"X-Auth-Token": TOKEN}
-    )
+    competitions = data.get("competitions", [])
+    print("Accessible competitions:", len(competitions))
 
-    try:
-        with urllib.request.urlopen(request, timeout=30) as response:
-            data = json.load(response)
+    for competition in competitions:
+        print(competition.get("code"), "-", competition.get("name"))
 
-        for match in data.get("matches", []):
-            all_matches.append({
-                "competition": name,
-                "date": match.get("utcDate"),
-                "status": match.get("status"),
-                "home": match.get("homeTeam", {}).get("name", "TBA"),
-                "away": match.get("awayTeam", {}).get("name", "TBA"),
-                "homeScore": match.get("score", {})
-                                  .get("fullTime", {}).get("home"),
-                "awayScore": match.get("score", {})
-                                  .get("fullTime", {}).get("away"),
-            })
-
-    except urllib.error.HTTPError as error:
-        print(f"{code}: API returned HTTP {error.code}")
-    except Exception as error:
-        print(f"{code}: {error}")
-
-all_matches.sort(key=lambda match: match.get("date") or "")
-
-with open("matches.json", "w", encoding="utf-8") as file:
-    json.dump(
-        {
-            "updated": datetime.now(timezone.utc).isoformat(),
-            "matches": all_matches,
-        },
-        file,
-        ensure_ascii=False,
-        indent=2,
-    )
-
-print(f"Saved {len(all_matches)} matches.")
+except urllib.error.HTTPError as error:
+    print("API returned HTTP", error.code)
+    print(error.read().decode("utf-8"))
+    raise
