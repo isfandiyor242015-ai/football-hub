@@ -4,7 +4,7 @@ import os
 import urllib.request
 import urllib.error
 
-token = os.environ.get("FOOTBALL_HUB_API_TOKEN")
+token = os.environ.get("FOOTBALL_API_TOKEN")
 
 if not token:
     raise RuntimeError("FOOTBALL_API_TOKEN is missing.")
