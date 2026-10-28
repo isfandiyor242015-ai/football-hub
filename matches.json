@@ -1,4 +1,83 @@
-{
-  "updated": "2026-10-28T07:08:03.653421+00:00",
-  "matches": []
+
+[
+  {
+    "homeTeam": {
+      "name": "Real Madrid"
+    },
+    "awayTeam": {
+      "name": "Barcelona"
+    },
+    "utcDate": "2026-11-01T20:00:00Z",
+    "status": "SCHEDULED",
+    "competition": {
+      "name": "La Liga"
+    }
+  },
+  {
+    "homeTeam": {
+      "name": "Manchester City"
+    },
+    "awayTeam": {
+      "name": "Arsenal"
+    },
+    "utcDate": "2026-11-02T17:30:00Z",
+    "status": "SCHEDULED",
+    "competition": {
+      "name": "Premier League"
+    }
+  },
+  {
+    "homeTeam": {
+      "name": "Liverpool"
+    },
+    "awayTeam": {
+      "name": "Chelsea"
+    },
+    "utcDate": "2026-11-03T19:00:00Z",
+    "status": "SCHEDULED",
+    "competition": {
+      "name": "Premier League"
+    }
+  },
+  {
+    "homeTeam": {
+      "name": "Bayern Munich"
+    },
+    "awayTeam": {
+      "name": "Borussia Dortmund"
+    },
+    "utcDate": "2026-11-04T18:30:00Z",
+    "status": "SCHEDULED",
+    "competition": {
+      "name": "Bundesliga"
+    }
+  },
+  {
+    "homeTeam": {
+      "name": "Paris Saint-Germain"
+    },
+    "awayTeam": {
+      "name": "Marseille"
+    },
+    "utcDate": "2026-11-05T20:00:00Z",
+    "status": "SCHEDULED",
+    "competition": {
+      "name": "Ligue 1"
+    }
+  },
+  {
+    "homeTeam": {
+      "name": "Inter Milan"
+    },
+    "awayTeam": {
+      "name": "AC Milan"
+    },
+    "utcDate": "2026-11-06T19:45:00Z",
+    "status": "SCHEDULED",
+    "competition": {
+      "name": "Serie A"
+    }
+  }
+]
+
 }
