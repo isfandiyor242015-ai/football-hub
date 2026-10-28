@@ -4,10 +4,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#10151d">
-  <title>Football Hub | The Beautiful Game</title>
+  <meta name="theme-color" content="#0b1018">
+  <title>FOOTBALL HUB | The Beautiful Game</title>
 
   <style>
+    :root {
+      --bg: #0b1018;
+      --panel: #131b27;
+      --panel2: #192433;
+      --text: #f4f7fb;
+      --muted: #9ba9bb;
+      --lime: #b8f34b;
+      --border: #293648;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -16,358 +26,772 @@
 
     html {
       scroll-behavior: smooth;
-      scroll-padding-top: 85px;
+      scroll-padding-top: 90px;
     }
 
     body {
-      background: #10151d;
-      color: #f5f7fa;
-      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
       line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1120px, 90%);
+      margin: auto;
     }
 
     header {
       position: sticky;
       top: 0;
       z-index: 10;
-      background: #151c26;
-      border-bottom: 1px solid #293341;
-      padding: 16px 7%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .logo {
-      color: #b7f34a;
-      font-size: 22px;
-      font-weight: 900;
-      text-decoration: none;
+      background: rgba(11, 16, 24, 0.94);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
     }
 
     nav {
+      min-height: 76px;
       display: flex;
-      gap: 22px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
       flex-wrap: wrap;
+      padding: 14px 0;
     }
 
-    nav a {
-      color: #d5dbe4;
-      text-decoration: none;
+    .logo {
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: var(--lime);
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 22px;
+      color: var(--muted);
       font-size: 14px;
     }
 
-    nav a:hover {
-      color: #b7f34a;
+    .nav-links a:hover {
+      color: var(--lime);
     }
 
     .hero {
-      min-height: 440px;
-      padding: 90px 8%;
+      min-height: 490px;
       display: flex;
       align-items: center;
       background:
-        linear-gradient(90deg, #10151d 10%, #10151ddd 55%, #10151d66),
-        url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1600&q=85")
-        center/cover;
+        radial-gradient(ellipse at 80% 30%, #385326 0%, transparent 35%),
+        linear-gradient(120deg, #101923, #15251c 65%, #0b1018);
+      border-bottom: 1px solid var(--border);
     }
 
     .hero-content {
-      max-width: 650px;
+      padding-top: 65px;
+      padding-bottom: 65px;
+      max-width: 760px;
     }
 
-    .tag {
-      color: #b7f34a;
-      font-size: 13px;
+    .eyebrow {
+      display: inline-block;
+      color: var(--lime);
+      background: #b8f34b16;
+      border: 1px solid #b8f34b50;
+      padding: 6px 12px;
+      border-radius: 30px;
+      font-size: 12px;
       font-weight: bold;
-      letter-spacing: 3px;
+      letter-spacing: 1.5px;
+      margin-bottom: 22px;
     }
 
     h1 {
-      font-size: clamp(38px, 6vw, 68px);
-      line-height: 1.1;
-      margin: 16px 0;
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: 1.02;
+      letter-spacing: -3px;
+      margin-bottom: 22px;
+    }
+
+    h1 span {
+      color: var(--lime);
     }
 
     .hero p {
-      color: #c0c8d4;
-      max-width: 520px;
-      margin-bottom: 26px;
+      color: var(--muted);
+      max-width: 590px;
+      font-size: 17px;
+      margin-bottom: 30px;
     }
 
-    .btn {
+    .button {
       display: inline-block;
-      padding: 12px 20px;
-      background: #b7f34a;
-      color: #10151d;
-      border-radius: 7px;
+      background: var(--lime);
+      color: #10170a;
       font-weight: bold;
-      text-decoration: none;
+      padding: 13px 22px;
+      border-radius: 8px;
+      transition: transform 0.2s, background 0.2s;
     }
 
-    .btn:hover {
-      background: #d0ff7a;
+    .button:hover {
+      transform: translateY(-2px);
+      background: #ceff78;
     }
 
-    .btn-outline {
-      background: transparent;
-      color: white;
-      border: 1px solid #566170;
+    .button.secondary {
+      background: var(--panel2);
+      color: var(--text);
+      border: 1px solid var(--border);
       margin-left: 8px;
     }
 
-    .btn-outline:hover {
-      background: #252e3a;
-      color: white;
+    section {
+      padding: 76px 0;
     }
 
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 55px 22px;
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
     }
 
-    .section-title {
-      font-size: 29px;
-      margin-bottom: 8px;
+    .section-heading h2 {
+      font-size: clamp(28px, 4vw, 38px);
+      letter-spacing: -1px;
     }
 
-    .section-description {
-      color: #9da9b9;
-      margin-bottom: 25px;
+    .section-heading p {
+      color: var(--muted);
+      font-size: 14px;
     }
 
-    .cards {
+    .accent {
+      color: var(--lime);
+    }
+
+    .grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
+      gap: 20px;
     }
 
     .card {
-      background: #19212c;
-      border: 1px solid #2b3543;
-      border-radius: 13px;
-      padding: 23px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
       transition: transform 0.2s, border-color 0.2s;
+      min-width: 0;
     }
 
     .card:hover {
       transform: translateY(-4px);
-      border-color: #b7f34a;
+      border-color: #b8f34b80;
     }
 
-    .club-icon {
-      font-size: 37px;
-      margin-bottom: 10px;
+    .club-symbol {
+      width: 66px;
+      height: 66px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: var(--panel2);
+      font-size: 32px;
+      margin-bottom: 20px;
     }
 
     .card h3 {
-      margin-bottom: 8px;
+      font-size: 21px;
+      margin-bottom: 6px;
     }
 
     .card p {
-      color: #aab5c4;
+      color: var(--muted);
       font-size: 14px;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
 
-    .card a {
-      color: #b7f34a;
-      text-decoration: none;
+    .tag {
+      display: inline-block;
+      background: #b8f34b16;
+      color: var(--lime);
+      border-radius: 5px;
+      padding: 5px 9px;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    .competitions {
+      background: #0e141e;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .competition-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .competition {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .competition-icon {
+      font-size: 27px;
+    }
+
+    .competition strong {
+      display: block;
+      font-size: 15px;
+    }
+
+    .competition small {
+      color: var(--muted);
+    }
+
+    .schedule-panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .schedule-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    select, .refresh-button {
+      background: var(--panel2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 11px 13px;
+      font-size: 14px;
+    }
+
+    .refresh-button {
+      cursor: pointer;
+    }
+
+    .refresh-button:hover {
+      border-color: var(--lime);
+    }
+
+    .match-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .match {
+      background: #0e151f;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 17px;
+    }
+
+    .match-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    .match-teams {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
       font-weight: bold;
     }
 
-    .info-panel {
-      background: #19212c;
-      border: 1px solid #2b3543;
-      border-radius: 13px;
-      padding: 28px;
-      margin-top: 20px;
+    .match-teams .home {
+      text-align: right;
     }
 
-    .info-panel p {
-      color: #b6c0cd;
+    .match-teams .away {
+      text-align: left;
+    }
+
+    .score {
+      color: var(--lime);
+      background: #b8f34b12;
+      border-radius: 7px;
+      padding: 5px 12px;
+      white-space: nowrap;
+    }
+
+    .status {
+      display: inline-block;
+      color: var(--lime);
+      font-size: 11px;
       margin-top: 10px;
     }
 
-    footer {
+    .message {
+      padding: 25px;
+      color: var(--muted);
       text-align: center;
-      padding: 28px 15px;
-      color: #8e9aab;
-      border-top: 1px solid #293341;
-      font-size: 14px;
+      background: #0e151f;
+      border-radius: 10px;
     }
 
-    @media (max-width: 650px) {
-      header {
-        align-items: flex-start;
-        flex-direction: column;
-      }
+    .about-box {
+      background:
+        radial-gradient(ellipse at 100% 0%, #b8f34b15, transparent 50%),
+        var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: clamp(25px, 5vw, 48px);
+    }
 
-      nav {
-        gap: 12px;
-      }
+    .about-box h2 {
+      font-size: 32px;
+      margin-bottom: 15px;
+    }
 
-      .hero {
-        min-height: 380px;
-        padding: 65px 7%;
-      }
+    .about-box p {
+      color: var(--muted);
+      max-width: 760px;
+    }
 
-      .cards {
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 760px) {
+      .grid, .competition-list {
         grid-template-columns: 1fr;
       }
 
-      .btn {
-        margin: 5px 0;
+      .nav-links {
+        gap: 13px;
       }
 
-      .btn-outline {
-        margin-left: 0;
+      .hero {
+        min-height: 420px;
+      }
+
+      .hero p {
+        font-size: 15px;
+      }
+
+      .schedule-panel {
+        padding: 14px;
+      }
+
+      .match-teams {
+        font-size: 13px;
+        gap: 6px;
+      }
+
+      .score {
+        padding: 5px 8px;
       }
     }
   </style>
 </head>
 
 <body>
-
   <header>
-    <a class="logo" href="#home">⚽ FOOTBALL HUB</a>
+    <nav class="container">
+      <a href="#home" class="logo">FOOTBALL<span>HUB</span></a>
 
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#clubs">Clubs</a>
-      <a href="#competitions">Competitions</a>
-      <a href="#about">About</a>
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#clubs">Clubs</a>
+        <a href="#competitions">Competitions</a>
+        <a href="#schedule">Match Schedule</a>
+        <a href="#about">About</a>
+      </div>
     </nav>
   </header>
 
   <main>
     <section class="hero" id="home">
-      <div class="hero-content">
-        <span class="tag">YOUR WORLD OF FOOTBALL</span>
-        <h1>Football Lives Here.</h1>
+      <div class="container hero-content">
+        <span class="eyebrow">WELCOME TO FOOTBALL HUB</span>
+        <h1>ONE GAME.<br>MILLIONS OF <span>FANS.</span></h1>
         <p>
-          Discover legendary clubs, explore famous competitions
-          and celebrate the world's most popular sport.
+          Your football destination. Explore legendary clubs,
+          discover major competitions and follow match results
+          from the world of football.
         </p>
-        <a class="btn" href="#clubs">Explore Clubs →</a>
-        <a class="btn btn-outline" href="#competitions">Competitions</a>
+        <a class="button" href="#schedule">Explore Matches ↗</a>
+        <a class="button secondary" href="#clubs">Discover Clubs</a>
       </div>
     </section>
 
-    <section class="container" id="clubs">
-      <h2 class="section-title">Popular Football Clubs</h2>
-      <p class="section-description">
-        Discover some of the biggest names in world football.
-        Select a club to learn more.
-      </p>
+    <section id="clubs">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">THE GIANTS</span>
+            <h2>Featured <span class="accent">Clubs</span></h2>
+          </div>
+          <p>Three famous clubs. One beautiful game.</p>
+        </div>
 
-      <div class="cards">
-        <article class="card">
-          <div class="club-icon">⚪</div>
-          <h3>Real Madrid</h3>
-          <p>A Spanish club famous for its European success
-          and legendary players.</p>
-          <a href="#real-madrid">Learn More →</a>
-        </article>
+        <div class="grid">
+          <article class="card">
+            <div class="club-symbol">👑</div>
+            <h3>Real Madrid</h3>
+            <p>
+              A Spanish football giant known for its rich history,
+              legendary players and success in European competitions.
+            </p>
+            <span class="tag">SPAIN · LA LIGA</span>
+          </article>
 
-        <article class="card">
-          <div class="club-icon">🔵🔴</div>
-          <h3>FC Barcelona</h3>
-          <p>A Spanish club known for its distinctive playing
-          style and famous academy.</p>
-          <a href="#barcelona">Learn More →</a>
-        </article>
+          <article class="card">
+            <div class="club-symbol">🔵🔴</div>
+            <h3>FC Barcelona</h3>
+            <p>
+              A famous Catalan club celebrated for its attacking
+              football, academy and passionate supporters.
+            </p>
+            <span class="tag">SPAIN · LA LIGA</span>
+          </article>
 
-        <article class="card">
-          <div class="club-icon">🔷</div>
-          <h3>Manchester City</h3>
-          <p>An English club known for its modern football
-          and domestic achievements.</p>
-          <a href="#man-city">Learn More →</a>
-        </article>
+          <article class="card">
+            <div class="club-symbol">🏙️</div>
+            <h3>Manchester City</h3>
+            <p>
+              An English club known for technical football,
+              tactical innovation and domestic achievements.
+            </p>
+            <span class="tag">ENGLAND · PREMIER LEAGUE</span>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section class="container" id="competitions">
-      <h2 class="section-title">Major Competitions</h2>
-      <p class="section-description">
-        Explore famous tournaments from around the world.
-      </p>
+    <section class="competitions" id="competitions">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">BIG STAGES</span>
+            <h2>Major <span class="accent">Competitions</span></h2>
+          </div>
+          <p>Follow football across Europe and beyond.</p>
+        </div>
 
-      <div class="cards">
-        <article class="card">
-          <div class="club-icon">🏆</div>
-          <h3>UEFA Champions League</h3>
-          <p>A major European competition for top club teams.</p>
-        </article>
+        <div class="competition-list">
+          <div class="competition">
+            <span class="competition-icon">🏆</span>
+            <div>
+              <strong>Premier League</strong>
+              <small>England</small>
+            </div>
+          </div>
 
-        <article class="card">
-          <div class="club-icon">🌍</div>
-          <h3>FIFA World Cup</h3>
-          <p>The international tournament featuring national teams.</p>
-        </article>
+          <div class="competition">
+            <span class="competition-icon">⭐</span>
+            <div>
+              <strong>Champions League</strong>
+              <small>Europe</small>
+            </div>
+          </div>
 
-        <article class="card">
-          <div class="club-icon">🥇</div>
-          <h3>Premier League</h3>
-          <p>One of the most widely followed domestic leagues.</p>
-        </article>
+          <div class="competition">
+            <span class="competition-icon">🇪🇸</span>
+            <div>
+              <strong>La Liga</strong>
+              <small>Spain</small>
+            </div>
+          </div>
+
+          <div class="competition">
+            <span class="competition-icon">🇩🇪</span>
+            <div>
+              <strong>Bundesliga</strong>
+              <small>Germany</small>
+            </div>
+          </div>
+
+          <div class="competition">
+            <span class="competition-icon">🇮🇹</span>
+            <div>
+              <strong>Serie A</strong>
+              <small>Italy</small>
+            </div>
+          </div>
+
+          <div class="competition">
+            <span class="competition-icon">🇫🇷</span>
+            <div>
+              <strong>Ligue 1</strong>
+              <small>France</small>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="container" id="about">
-      <h2 class="section-title">About Football Hub</h2>
-      <div class="info-panel">
-        <p>
-          Football Hub is a fan-made website dedicated to the
-          beautiful game. Here you can discover clubs, learn
-          about competitions and explore football history.
-        </p>
+    <section id="schedule">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">FIXTURES & RESULTS</span>
+            <h2>Match <span class="accent">Schedule</span></h2>
+          </div>
+          <p>Upcoming games and recent results.</p>
+        </div>
+
+        <div class="schedule-panel">
+          <div class="schedule-top">
+            <div>
+              <strong>Football matches</strong>
+              <div style="color: var(--muted); font-size: 13px;">
+                Data loads from matches.json when available.
+              </div>
+            </div>
+
+            <div>
+              <select id="competitionFilter" aria-label="Filter by competition">
+                <option value="all">All competitions</option>
+                <option value="Premier League">Premier League</option>
+                <option value="La Liga">La Liga</option>
+                <option value="Bundesliga">Bundesliga</option>
+                <option value="Serie A">Serie A</option>
+                <option value="Ligue 1">Ligue 1</option>
+                <option value="Champions League">Champions League</option>
+              </select>
+
+              <button class="refresh-button" id="refreshMatches">
+                ↻ Refresh
+              </button>
+            </div>
+          </div>
+
+          <div id="matches" class="match-list">
+            <div class="message">
+              Loading match schedule…
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="container" id="real-madrid">
-      <div class="info-panel">
-        <h2>⚪ Real Madrid</h2>
-        <p>
-          Based in Madrid, Spain, Real Madrid is one of the
-          world's best-known football clubs. Its home stadium
-          is the Santiago Bernabéu.
-        </p>
-        <p><a class="btn" href="#clubs">← Back to Clubs</a></p>
-      </div>
-    </section>
-
-    <section class="container" id="barcelona">
-      <div class="info-panel">
-        <h2>🔵🔴 FC Barcelona</h2>
-        <p>
-          FC Barcelona is based in Barcelona, Spain. The club
-          is known for its youth academy, La Masia, and its
-          long footballing history.
-        </p>
-        <p><a class="btn" href="#clubs">← Back to Clubs</a></p>
-      </div>
-    </section>
-
-    <section class="container" id="man-city">
-      <div class="info-panel">
-        <h2>🔷 Manchester City</h2>
-        <p>
-          Manchester City is an English football club based
-          in Manchester. Its home ground is the Etihad Stadium.
-        </p>
-        <p><a class="btn" href="#clubs">← Back to Clubs</a></p>
+    <section id="about">
+      <div class="container">
+        <div class="about-box">
+          <span class="eyebrow">ABOUT THE PROJECT</span>
+          <h2>Football brings us <span class="accent">together.</span></h2>
+          <p>
+            FOOTBALL HUB is a football fan website created to explore
+            famous clubs, major competitions, fixtures and results.
+            The website can display automatic match data when a valid
+            matches.json file is connected.
+          </p>
+        </div>
       </div>
     </section>
   </main>
 
   <footer>
-    <p>⚽ FOOTBALL HUB</p>
-    <p>Made by a football fan | © 2026</p>
+    <div class="container footer-inner">
+      <span class="logo">FOOTBALL<span>HUB</span></span>
+      <span>Made for football fans · 2026</span>
+    </div>
   </footer>
 
+  <script>
+    const matchesContainer = document.getElementById("matches");
+    const competitionFilter = document.getElementById("competitionFilter");
+    const refreshButton = document.getElementById("refreshMatches");
+
+    let allMatches = [];
+
+    const competitionNames = {
+      PL: "Premier League",
+      PD: "La Liga",
+      BL1: "Bundesliga",
+      SA: "Serie A",
+      FL1: "Ligue 1",
+      CL: "Champions League",
+      WC: "World Cup",
+      EC: "European Championship"
+    };
+
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, function (char) {
+        return {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        }[char];
+      });
+    }
+
+    function formatDate(value) {
+      if (!value) return "Date unavailable";
+
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return "Date unavailable";
+      }
+
+      return date.toLocaleString(undefined, {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function renderMatches() {
+      const selected = competitionFilter.value;
+
+      const filtered = allMatches.filter(function (match) {
+        const name =
+          match.competition?.name ||
+          competitionNames[match.competition?.code] ||
+          match.competitionName ||
+          "Other competition";
+
+        return selected === "all" || name === selected;
+      });
+
+      if (filtered.length === 0) {
+        matchesContainer.innerHTML =
+          '<div class="message">' +
+          'No matches found for this filter. ' +
+          'Check back later or connect the football data API.' +
+          '</div>';
+        return;
+      }
+
+      matchesContainer.innerHTML = filtered.map(function (match) {
+        const home = match.homeTeam?.name || match.homeTeam || "Home team";
+        const away = match.awayTeam?.name || match.awayTeam || "Away team";
+
+        const competition =
+          match.competition?.name ||
+          competitionNames[match.competition?.code] ||
+          match.competitionName ||
+          "Football";
+
+        const status = match.status || "SCHEDULED";
+        const scoreData = match.score?.fullTime || match.score || {};
+
+        let score = "VS";
+
+        if (
+          scoreData.home !== undefined &&
+          scoreData.away !== undefined &&
+          scoreData.home !== null &&
+          scoreData.away !== null
+        ) {
+          score = scoreData.home + " - " + scoreData.away;
+        }
+
+        return `
+          <article class="match">
+            <div class="match-meta">
+              <span>${escapeHTML(competition)}</span>
+              <span>${escapeHTML(formatDate(match.utcDate || match.date))}</span>
+            </div>
+            <div class="match-teams">
+              <span class="home">${escapeHTML(home)}</span>
+              <span class="score">${escapeHTML(score)}</span>
+              <span class="away">${escapeHTML(away)}</span>
+            </div>
+            <span class="status">${escapeHTML(status.replaceAll("_", " "))}</span>
+          </article>
+        `;
+      }).join("");
+    }
+
+    async function loadMatches() {
+      matchesContainer.innerHTML =
+        '<div class="message">Loading match schedule…</div>';
+
+      try {
+        const response = await fetch("./matches.json?t=" + Date.now(), {
+          cache: "no-store"
+        });
+
+        if (!response.ok) {
+          throw new Error("Match data file is not available yet.");
+        }
+
+        const data = await response.json();
+
+        allMatches = Array.isArray(data)
+          ? data
+          : Array.isArray(data.matches)
+            ? data.matches
+            : [];
+
+        if (allMatches.length === 0) {
+          matchesContainer.innerHTML =
+            '<div class="message">' +
+            'No matches are available yet. Connect the API and generate matches.json.' +
+            '</div>';
+          return;
+        }
+
+        renderMatches();
+      } catch (error) {
+        allMatches = [];
+
+        matchesContainer.innerHTML =
+          '<div class="message">' +
+          '<strong>Match data is not connected yet.</strong><br>' +
+          'The rest of the website works, but automatic fixtures need ' +
+          'a matches.json file generated from a football data API.' +
+          '</div>';
+      }
+    }
+
+    competitionFilter.addEventListener("change", renderMatches);
+    refreshButton.addEventListener("click", loadMatches);
+
+    loadMatches();
+  </script>
 </body>
 </html>
