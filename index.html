@@ -206,6 +206,67 @@
       margin-bottom: 20px;
     }
 
+    .club-symbol {
+  width: 66px;
+  height: 66px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: var(--panel2);
+  margin-bottom: 20px;
+}
+
+.club-symbol img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+}
+
+.team-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.team {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.team.home {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.team.away {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+@media (max-width: 500px) {
+  .team {
+    flex-direction: column;
+    gap: 5px;
+    text-align: center !important;
+  }
+
+  .team.home {
+    justify-content: center;
+  }
+
+  .team.away {
+    justify-content: center;
+  }
+
+  .team-logo {
+    width: 30px;
+    height: 30px;
+  }
+}
+
     .card h3 {
       font-size: 21px;
       margin-bottom: 6px;
@@ -460,31 +521,40 @@
 
         <div class="grid">
           <article class="card">
-            <div class="club-symbol">👑</div>
+            <div class="club-symbol">
+  <img src="https://crests.football-data.org/86.png"
+       alt="Real Madrid logo">
+</div>
             <h3>Real Madrid</h3>
             <p>
               A Spanish football giant known for its rich history,
-              legendary players and success in European competitions.
+              legendary players and success in European competitions,in this club played Cristiano Ronaldo.
             </p>
             <span class="tag">SPAIN · LA LIGA</span>
           </article>
 
           <article class="card">
-            <div class="club-symbol">🔵🔴</div>
+            <div class="club-symbol">
+  <img src="https://crests.football-data.org/81.png"
+       alt="Barcelona logo">
+</div>
             <h3>FC Barcelona</h3>
             <p>
               A famous Catalan club celebrated for its attacking
-              football, academy and passionate supporters.
+              football, academy and passionate supporters,in this club played Lionel Messi.
             </p>
             <span class="tag">SPAIN · LA LIGA</span>
           </article>
 
           <article class="card">
-            <div class="club-symbol">🏙️</div>
+            <div class="club-symbol">
+  <img src="https://crests.football-data.org/65.png"
+       alt="Manchester City logo">
+</div>
             <h3>Manchester City</h3>
             <p>
               An English club known for technical football,
-              tactical innovation and domestic achievements.
+              tactical innovation and domestic achievements,in this club played David Bechkam.
             </p>
             <span class="tag">ENGLAND · PREMIER LEAGUE</span>
           </article>
@@ -675,6 +745,30 @@
       });
     }
 
+    function getClubLogo(teamName) {
+  const logos = {
+    "Real Madrid": "86",
+    "Barcelona": "81",
+    "FC Barcelona": "81",
+    "Manchester City": "65",
+    "Arsenal": "57",
+    "Liverpool": "64",
+    "Chelsea": "61",
+    "Bayern Munich": "5",
+    "Borussia Dortmund": "4",
+    "Paris Saint-Germain": "524",
+    "Marseille": "516",
+    "Inter Milan": "108",
+    "AC Milan": "98"
+  };
+
+  const id = logos[teamName];
+
+  return id
+    ? `https://crests.football-data.org/${id}.png`
+    : "";
+}
+    
     function renderMatches() {
       const selected = competitionFilter.value;
 
@@ -697,10 +791,24 @@
             </div>
 
             <div class="match-teams">
-              <span class="home">${escapeHTML(match.homeTeam)}</span>
-              <span class="score">VS</span>
-              <span class="away">${escapeHTML(match.awayTeam)}</span>
-            </div>
+  <div class="team home">
+    <span>${escapeHTML(match.homeTeam)}</span>
+    <img class="team-logo"
+         src="${getClubLogo(match.homeTeam)}"
+         alt="${escapeHTML(match.homeTeam)} logo"
+         onerror="this.style.visibility='hidden'">
+  </div>
+
+  <span class="score">VS</span>
+
+  <div class="team away">
+    <img class="team-logo"
+         src="${getClubLogo(match.awayTeam)}"
+         alt="${escapeHTML(match.awayTeam)} logo"
+         onerror="this.style.visibility='hidden'">
+    <span>${escapeHTML(match.awayTeam)}</span>
+  </div>
+</div>
 
             <span class="status">${escapeHTML(match.status)}</span>
           </article>
