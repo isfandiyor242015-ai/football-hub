@@ -202,70 +202,38 @@
       place-items: center;
       border-radius: 16px;
       background: var(--panel2);
-      font-size: 32px;
       margin-bottom: 20px;
     }
 
-    .club-symbol {
-  width: 66px;
-  height: 66px;
-  display: grid;
-  place-items: center;
-  border-radius: 16px;
-  background: var(--panel2);
-  margin-bottom: 20px;
-}
+    .club-symbol img {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+    }
 
-.club-symbol img {
-  width: 52px;
-  height: 52px;
-  object-fit: contain;
-}
+    .team-logo {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
 
-.team-logo {
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
+    .team {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
 
-.team {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-}
+    .team.home {
+      justify-content: flex-end;
+      text-align: right;
+    }
 
-.team.home {
-  justify-content: flex-end;
-  text-align: right;
-}
-
-.team.away {
-  justify-content: flex-start;
-  text-align: left;
-}
-
-@media (max-width: 500px) {
-  .team {
-    flex-direction: column;
-    gap: 5px;
-    text-align: center !important;
-  }
-
-  .team.home {
-    justify-content: center;
-  }
-
-  .team.away {
-    justify-content: center;
-  }
-
-  .team-logo {
-    width: 30px;
-    height: 30px;
-  }
-}
+    .team.away {
+      justify-content: flex-start;
+      text-align: left;
+    }
 
     .card h3 {
       font-size: 21px;
@@ -305,10 +273,10 @@
     }
 
     .competition-icon {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-  flex-shrink: 0;
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      flex-shrink: 0;
     }
 
     .competition strong {
@@ -318,6 +286,74 @@
 
     .competition small {
       color: var(--muted);
+    }
+
+    /* TOP CLUB RANKING */
+
+    .ranking-section {
+      background: #0e141e;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ranking-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .rank-row {
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr) minmax(120px, 180px);
+      align-items: center;
+      gap: 16px;
+      padding: 15px 18px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .rank-number {
+      color: var(--lime);
+      font-size: 20px;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .rank-club {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      font-weight: bold;
+    }
+
+    .rank-club img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .rank-country {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .country-flag {
+      width: 24px;
+      height: 18px;
+      object-fit: cover;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .ranking-note {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 18px;
     }
 
     .schedule-panel {
@@ -474,163 +510,255 @@
         font-size: 13px;
         gap: 6px;
       }
+    }
 
-      .score {
-        padding: 5px 8px;
+    @media (max-width: 500px) {
+      .team {
+        flex-direction: column;
+        gap: 5px;
+        text-align: center !important;
+      }
+
+      .team.home,
+      .team.away {
+        justify-content: center;
+      }
+
+      .team-logo {
+        width: 30px;
+        height: 30px;
+      }
+
+      .rank-row {
+        grid-template-columns: 38px minmax(0, 1fr);
+        gap: 10px;
+        padding: 13px;
+      }
+
+      .rank-country {
+        grid-column: 2;
+        margin-top: -5px;
       }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <nav class="container">
-      <a href="#home" class="logo">FOOTBALL<span>HUB</span></a>
 
-      <div class="nav-links">
-        <a href="#home">Home</a>
-        <a href="#clubs">Clubs</a>
-        <a href="#competitions">Competitions</a>
-        <a href="#schedule">Match Schedule</a>
-        <a href="#about">About</a>
-      </div>
-    </nav>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="#home" class="logo">FOOTBALL<span>HUB</span></a>
+
+        <div class="nav-links">
+          <a href="#home">Home</a>
+          <a href="#clubs">Clubs</a>
+          <a href="#ranking">Top Ranking</a>
+          <a href="#competitions">Competitions</a>
+          <a href="#schedule">Matches</a>
+          <a href="#about">About</a>
+        </div>
+      </nav>
+    </div>
   </header>
 
   <main>
+
     <section class="hero" id="home">
-      <div class="container hero-content">
-        <span class="eyebrow">WELCOME TO FOOTBALL HUB</span>
-        <h1>ONE GAME.<br>MILLIONS OF <span>FANS.</span></h1>
-        <p>
-          Your football destination. Explore legendary clubs,
-          discover major competitions and follow match results
-          from the world of football.
-          (The website was made by Isfandiyor in Prezidential school of Jizzakh)
-        </p>
-        <a class="button" href="#schedule">Explore Matches ↗</a>
-        <a class="button secondary" href="#clubs">Discover Clubs</a>
+      <div class="container">
+        <div class="hero-content">
+          <span class="eyebrow">WELCOME TO FOOTBALL HUB</span>
+
+          <h1>
+            THE HOME OF <span>FOOTBALL.</span>
+          </h1>
+
+          <p>
+            Discover the world's biggest football clubs,
+            follow major competitions and explore upcoming matches.
+            Everything about football in one place.
+          </p>
+
+          <a href="#clubs" class="button">Explore Clubs</a>
+          <a href="#schedule" class="button secondary">View Matches</a>
+        </div>
       </div>
     </section>
 
     <section id="clubs">
       <div class="container">
+
         <div class="section-heading">
           <div>
-            <span class="eyebrow">THE GIANTS</span>
-            <h2>Featured <span class="accent">Clubs</span></h2>
+            <span class="eyebrow">WORLD CLASS FOOTBALL</span>
+            <h2>Popular <span class="accent">Clubs</span></h2>
           </div>
-          <p>Three famous clubs. One beautiful game.</p>
+
+          <p>Discover some of the biggest clubs in football.</p>
         </div>
 
         <div class="grid">
+
           <article class="card">
             <div class="club-symbol">
-  <img src="https://crests.football-data.org/86.png"
-       alt="Real Madrid logo">
-</div>
+              <img src="https://crests.football-data.org/86.png"
+                   alt="Real Madrid logo">
+            </div>
             <h3>Real Madrid</h3>
-            <p>
-              A Spanish football giant known for its rich history,
-              legendary players and success in European competitions,in this club played Cristiano Ronaldo.
-            </p>
-            <span class="tag">SPAIN · LA LIGA</span>
+            <p>One of the most successful football clubs in the world.</p>
+            <span class="tag">SPAIN</span>
           </article>
 
           <article class="card">
             <div class="club-symbol">
-  <img src="https://crests.football-data.org/81.png"
-       alt="Barcelona logo">
-</div>
-            <h3>FC Barcelona</h3>
-            <p>
-              A famous Catalan club celebrated for its attacking
-              football, academy and passionate supporters,in this club played Lionel Messi.
-            </p>
-            <span class="tag">SPAIN · LA LIGA</span>
+              <img src="https://crests.football-data.org/81.png"
+                   alt="Barcelona logo">
+            </div>
+            <h3>Barcelona</h3>
+            <p>A famous Spanish club known for its attacking football.</p>
+            <span class="tag">SPAIN</span>
           </article>
 
           <article class="card">
             <div class="club-symbol">
-  <img src="https://crests.football-data.org/65.png"
-       alt="Manchester City logo">
-</div>
+              <img src="https://crests.football-data.org/65.png"
+                   alt="Manchester City logo">
+            </div>
             <h3>Manchester City</h3>
-            <p>
-              An English club known for technical football,
-              tactical innovation and domestic achievements,in this club played Erling Haaland.
-            </p>
-            <span class="tag">ENGLAND · PREMIER LEAGUE</span>
+            <p>One of the leading clubs in English and European football.</p>
+            <span class="tag">ENGLAND</span>
           </article>
+
         </div>
       </div>
     </section>
 
-    <section class="competitions" id="competitions">
+    <!-- TOP RANKING SECTION -->
+
+    <section id="ranking" class="ranking-section">
       <div class="container">
+
         <div class="section-heading">
           <div>
-            <span class="eyebrow">BIG STAGES</span>
+            <span class="eyebrow">CLUB RANKINGS</span>
+            <h2>Top-Ranked <span class="accent">Clubs</span></h2>
+          </div>
+
+          <p>Manually updated club ranking.</p>
+        </div>
+
+        <div id="rankingList" class="ranking-list"></div>
+
+        <p class="ranking-note">
+          This is a manually maintained starter list, not live official data.
+          Check the official UEFA ranking and update the order yourself:
+          <a href="https://www.uefa.com/nationalassociations/uefarankings/club/"
+             target="_blank"
+             rel="noopener noreferrer"
+             style="color: var(--lime);">
+            UEFA Club Rankings
+          </a>
+        </p>
+
+      </div>
+    </section>
+
+    <!-- COMPETITIONS SECTION -->
+
+    <section id="competitions" class="competitions">
+      <div class="container">
+
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">THE BIGGEST TOURNAMENTS</span>
             <h2>Major <span class="accent">Competitions</span></h2>
           </div>
+
           <p>Follow football across Europe and beyond.</p>
         </div>
 
         <div class="competition-list">
-  <div class="competition">
-    <img class="competition-icon"
-         src="https://sachawd.github.io/wc26-assets/league-logos/league_premier-league.png"
-         alt="Premier League">
-    <div><strong>Premier League</strong><small>England</small></div>
-  </div>
 
-  <div class="competition">
-    <img class="competition-icon"
-         src="https://commons.wikimedia.org/wiki/Special:FilePath/UEFA_Champions_League_logo.png"
-         alt="Champions League">
-    <div><strong>Champions League</strong><small>Europe</small></div>
-  </div>
+          <div class="competition">
+            <img class="competition-icon"
+                 src="https://sachawd.github.io/wc26-assets/league-logos/league_premier-league.png"
+                 alt="Premier League">
+            <div>
+              <strong>Premier League</strong>
+              <small>England</small>
+            </div>
+          </div>
 
-  <div class="competition">
-    <img class="competition-icon"
-         src="https://sachawd.github.io/wc26-assets/league-logos/league_la-liga.png"
-         alt="La Liga">
-    <div><strong>La Liga</strong><small>Spain</small></div>
-  </div>
+          <div class="competition">
+            <img class="competition-icon"
+                 src="https://commons.wikimedia.org/wiki/Special:FilePath/UEFA_Champions_League_logo.png"
+                 alt="Champions League">
+            <div>
+              <strong>Champions League</strong>
+              <small>Europe</small>
+            </div>
+          </div>
 
-  <div class="competition">
-    <img class="competition-icon"
-         src="https://sachawd.github.io/wc26-assets/league-logos/league_bundesliga.png"
-         alt="Bundesliga">
-    <div><strong>Bundesliga</strong><small>Germany</small></div>
-  </div>
+          <div class="competition">
+            <img class="competition-icon"
+                 src="https://sachawd.github.io/wc26-assets/league-logos/league_la-liga.png"
+                 alt="La Liga">
+            <div>
+              <strong>La Liga</strong>
+              <small>Spain</small>
+            </div>
+          </div>
 
-  <div class="competition">
-    <img class="competition-icon"
-         src="https://sachawd.github.io/wc26-assets/league-logos/league_serie-a.png"
-         alt="Serie A">
-    <div><strong>Serie A</strong><small>Italy</small></div>
-  </div>
+          <div class="competition">
+            <img class="competition-icon"
+                 src="https://sachawd.github.io/wc26-assets/league-logos/league_bundesliga.png"
+                 alt="Bundesliga">
+            <div>
+              <strong>Bundesliga</strong>
+              <small>Germany</small>
+            </div>
+          </div>
 
-  <div class="competition">
-    <img class="competition-icon"
-         src="https://sachawd.github.io/wc26-assets/league-logos/league_ligue-1.png"
-         alt="Ligue 1">
-    <div><strong>Ligue 1</strong><small>France</small></div>
-  </div>
-</div>
-  
+          <div class="competition">
+            <img class="competition-icon"
+                 src="https://sachawd.github.io/wc26-assets/league-logos/league_serie-a.png"
+                 alt="Serie A">
+            <div>
+              <strong>Serie A</strong>
+              <small>Italy</small>
+            </div>
+          </div>
+
+          <div class="competition">
+            <img class="competition-icon"
+                 src="https://sachawd.github.io/wc26-assets/league-logos/league_ligue-1.png"
+                 alt="Ligue 1">
+            <div>
+              <strong>Ligue 1</strong>
+              <small>France</small>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- MATCH SCHEDULE -->
+
     <section id="schedule">
       <div class="container">
+
         <div class="section-heading">
           <div>
             <span class="eyebrow">FIXTURES & RESULTS</span>
             <h2>Match <span class="accent">Schedule</span></h2>
           </div>
+
           <p>Upcoming games and recent results.</p>
         </div>
 
         <div class="schedule-panel">
+
           <div class="schedule-top">
             <div>
               <strong>Football matches</strong>
@@ -659,24 +787,34 @@
           <div id="matches" class="match-list">
             <div class="message">Loading match schedule…</div>
           </div>
+
         </div>
       </div>
     </section>
 
+    <!-- ABOUT SECTION -->
+
     <section id="about">
       <div class="container">
+
         <div class="about-box">
           <span class="eyebrow">ABOUT THE PROJECT</span>
-          <h2>Football brings us <span class="accent">together.</span></h2>
+
+          <h2>
+            Football brings us <span class="accent">together.</span>
+          </h2>
+
           <p>
             FOOTBALL HUB is a football fan website created to explore
             famous clubs, major competitions, fixtures and results.
             Demo fixtures are included. You can edit the matches
-            in the JavaScript section of this file.Made by Isfandiyor.
+            in the JavaScript section of this file. Made by Isfandiyor.
           </p>
         </div>
+
       </div>
     </section>
+
   </main>
 
   <footer>
@@ -687,11 +825,71 @@
   </footer>
 
   <script>
+
+    // MANUAL RANKING:
+    // Check UEFA's official list and reorder these clubs yourself.
+    // This starter order is not live data.
+
+    const topClubs = [
+      { name: "Bayern Munich", country: "Germany", flag: "de", logo: "5" },
+      { name: "Arsenal", country: "England", flag: "gb-eng", logo: "57" },
+      { name: "Real Madrid", country: "Spain", flag: "es", logo: "86" },
+      { name: "Paris Saint-Germain", country: "France", flag: "fr", logo: "524" },
+      { name: "Inter", country: "Italy", flag: "it", logo: "108" },
+      { name: "Liverpool", country: "England", flag: "gb-eng", logo: "64" },
+      { name: "Manchester City", country: "England", flag: "gb-eng", logo: "65" },
+      { name: "Barcelona", country: "Spain", flag: "es", logo: "81" },
+      { name: "Borussia Dortmund", country: "Germany", flag: "de", logo: "4" },
+      { name: "Bayer Leverkusen", country: "Germany", flag: "de", logo: "3" }
+    ];
+
+    const rankingList = document.getElementById("rankingList");
+
+    function renderRanking() {
+      rankingList.innerHTML = topClubs.map(function (club, index) {
+
+        const medal = ["🥇", "🥈", "🥉"][index] || `#${index + 1}`;
+
+        return `
+          <article class="rank-row">
+
+            <div class="rank-number">${medal}</div>
+
+            <div class="rank-club">
+              <img
+                src="https://crests.football-data.org/${club.logo}.png"
+                alt="${club.name} logo"
+                onerror="this.style.visibility='hidden'"
+              >
+              <span>${club.name}</span>
+            </div>
+
+            <div class="rank-country">
+              <img
+                class="country-flag"
+                src="https://flagcdn.com/${club.flag}.svg"
+                alt="${club.country} flag"
+                onerror="this.style.display='none'"
+              >
+              <span>${club.country}</span>
+            </div>
+
+          </article>
+        `;
+
+      }).join("");
+    }
+
+    renderRanking();
+
+    // MATCH SCHEDULE
+
     const matchesContainer = document.getElementById("matches");
     const competitionFilter = document.getElementById("competitionFilter");
     const refreshButton = document.getElementById("refreshMatches");
 
     const allMatches = [
+
       {
         homeTeam: "Real Madrid",
         awayTeam: "Barcelona",
@@ -699,6 +897,7 @@
         competition: "La Liga",
         status: "DEMO MATCH"
       },
+
       {
         homeTeam: "Manchester City",
         awayTeam: "Arsenal",
@@ -706,6 +905,7 @@
         competition: "Premier League",
         status: "DEMO MATCH"
       },
+
       {
         homeTeam: "Liverpool",
         awayTeam: "Chelsea",
@@ -713,6 +913,7 @@
         competition: "Premier League",
         status: "DEMO MATCH"
       },
+
       {
         homeTeam: "Bayern Munich",
         awayTeam: "Borussia Dortmund",
@@ -720,6 +921,7 @@
         competition: "Bundesliga",
         status: "DEMO MATCH"
       },
+
       {
         homeTeam: "Paris Saint-Germain",
         awayTeam: "Marseille",
@@ -727,6 +929,7 @@
         competition: "Ligue 1",
         status: "DEMO MATCH"
       },
+
       {
         homeTeam: "Inter Milan",
         awayTeam: "AC Milan",
@@ -734,10 +937,12 @@
         competition: "Serie A",
         status: "DEMO MATCH"
       }
+
     ];
 
     function escapeHTML(value) {
       return String(value ?? "").replace(/[&<>"']/g, function (char) {
+
         return {
           "&": "&amp;",
           "<": "&lt;",
@@ -745,6 +950,7 @@
           '"': "&quot;",
           "'": "&#39;"
         }[char];
+
       });
     }
 
@@ -765,30 +971,33 @@
     }
 
     function getClubLogo(teamName) {
-  const logos = {
-    "Real Madrid": "86",
-    "Barcelona": "81",
-    "FC Barcelona": "81",
-    "Manchester City": "65",
-    "Arsenal": "57",
-    "Liverpool": "64",
-    "Chelsea": "61",
-    "Bayern Munich": "5",
-    "Borussia Dortmund": "4",
-    "Paris Saint-Germain": "524",
-    "Marseille": "516",
-    "Inter Milan": "108",
-    "AC Milan": "98"
-  };
 
-  const id = logos[teamName];
+      const logos = {
+        "Real Madrid": "86",
+        "Barcelona": "81",
+        "FC Barcelona": "81",
+        "Manchester City": "65",
+        "Arsenal": "57",
+        "Liverpool": "64",
+        "Chelsea": "61",
+        "Bayern Munich": "5",
+        "Borussia Dortmund": "4",
+        "Paris Saint-Germain": "524",
+        "Marseille": "516",
+        "Inter Milan": "108",
+        "AC Milan": "98"
+      };
 
-  return id
-    ? `https://crests.football-data.org/${id}.png`
-    : "";
-}
-    
+      const id = logos[teamName];
+
+      return id
+        ? `https://crests.football-data.org/${id}.png`
+        : "";
+
+    }
+
     function renderMatches() {
+
       const selected = competitionFilter.value;
 
       const filtered = allMatches.filter(function (match) {
@@ -802,43 +1011,62 @@
       }
 
       matchesContainer.innerHTML = filtered.map(function (match) {
+
         return `
           <article class="match">
+
             <div class="match-meta">
               <span>${escapeHTML(match.competition)}</span>
               <span>${escapeHTML(formatDate(match.date))}</span>
             </div>
 
             <div class="match-teams">
-  <div class="team home">
-    <span>${escapeHTML(match.homeTeam)}</span>
-    <img class="team-logo"
-         src="${getClubLogo(match.homeTeam)}"
-         alt="${escapeHTML(match.homeTeam)} logo"
-         onerror="this.style.visibility='hidden'">
-  </div>
 
-  <span class="score">VS</span>
+              <div class="team home">
+                <span>${escapeHTML(match.homeTeam)}</span>
 
-  <div class="team away">
-    <img class="team-logo"
-         src="${getClubLogo(match.awayTeam)}"
-         alt="${escapeHTML(match.awayTeam)} logo"
-         onerror="this.style.visibility='hidden'">
-    <span>${escapeHTML(match.awayTeam)}</span>
-  </div>
-</div>
+                <img
+                  class="team-logo"
+                  src="${getClubLogo(match.homeTeam)}"
+                  alt="${escapeHTML(match.homeTeam)} logo"
+                  onerror="this.style.visibility='hidden'"
+                >
+              </div>
 
-            <span class="status">${escapeHTML(match.status)}</span>
+              <span class="score">VS</span>
+
+              <div class="team away">
+
+                <img
+                  class="team-logo"
+                  src="${getClubLogo(match.awayTeam)}"
+                  alt="${escapeHTML(match.awayTeam)} logo"
+                  onerror="this.style.visibility='hidden'"
+                >
+
+                <span>${escapeHTML(match.awayTeam)}</span>
+
+              </div>
+
+            </div>
+
+            <span class="status">
+              ${escapeHTML(match.status)}
+            </span>
+
           </article>
         `;
+
       }).join("");
+
     }
 
     competitionFilter.addEventListener("change", renderMatches);
     refreshButton.addEventListener("click", renderMatches);
 
     renderMatches();
+
   </script>
+
 </body>
 </html>
