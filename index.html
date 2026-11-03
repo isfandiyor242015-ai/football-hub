@@ -483,7 +483,61 @@
       gap: 15px;
       flex-wrap: wrap;
     }
+    
+/* RECENT TRANSFERS */
 
+.transfers-section {
+  background: #0e141e;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.transfer-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.transfer-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.transfer-card:hover {
+  transform: translateY(-3px);
+  border-color: #b8f34b80;
+}
+
+.transfer-card h3 {
+  font-size: 17px;
+  margin: 12px 0 8px;
+}
+
+.transfer-card p {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.transfer-card a {
+  color: var(--lime);
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.transfer-date {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+@media (max-width: 760px) {
+  .transfer-list {
+    grid-template-columns: 1fr;
+  }
+}
     @media (max-width: 760px) {
       .grid,
       .competition-list {
@@ -556,6 +610,7 @@
           <a href="#ranking">Top Ranking</a>
           <a href="#competitions">Competitions</a>
           <a href="#schedule">Matches</a>
+          <a href="#transfers">Transfers</a>
           <a href="#about">About</a>
         </div>
       </nav>
@@ -766,7 +821,37 @@
 
 <script async src="https://football-mania.com/widget.js"></script>
     </section>
+<!-- RECENT TRANSFERS SECTION -->
 
+<section id="transfers" class="transfers-section">
+  <div class="container">
+
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">LATEST FOOTBALL NEWS</span>
+        <h2>Recent <span class="accent">Transfers</span></h2>
+      </div>
+
+      <p>Latest transfer news from BBC Sport.</p>
+    </div>
+
+    <div id="transferList" class="transfer-list">
+      <div class="message">Loading transfer news...</div>
+    </div>
+
+    <p class="ranking-note">
+      News source:
+      <a href="https://www.bbc.co.uk/sport/football"
+         target="_blank"
+         rel="noopener noreferrer"
+         style="color: var(--lime);">
+        BBC Sport
+      </a>
+    </p>
+
+  </div>
+</section>   
+    
     <!-- ABOUT SECTION -->
 
     <section id="about">
@@ -857,6 +942,59 @@
 
     renderRanking();
     
+    // LOAD RECENT TRANSFER NEWS
+
+async function loadTransfers() {
+  const transferList = document.getElementById("transferList");
+
+  try {
+    const response = await fetch("transfers.json");
+
+    if (!response.ok) {
+      throw new Error("Could not load transfers.json");
+    }
+
+    const transfers = await response.json();
+
+    if (!transfers.length) {
+      transferList.innerHTML =
+        '<div class="message">No recent transfer news found.</div>';
+      return;
+    }
+
+    transferList.innerHTML = "";
+
+    transfers.forEach(function (item) {
+      const card = document.createElement("article");
+      card.className = "transfer-card";
+
+      const date = document.createElement("span");
+      date.className = "transfer-date";
+      date.textContent = item.date || "Latest news";
+
+      const title = document.createElement("h3");
+      title.textContent = item.title;
+
+      const description = document.createElement("p");
+      description.textContent = item.description || "";
+
+      const link = document.createElement("a");
+      link.href = item.link;
+      link.textContent = "Read full story →";
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+
+      card.append(date, title, description, link);
+      transferList.appendChild(card);
+    });
+
+  } catch (error) {
+    transferList.innerHTML =
+      '<div class="message">Transfer news is not available yet. Please try again later.</div>';
+  }
+}
+
+loadTransfers();
   </script>
 
 </body>
