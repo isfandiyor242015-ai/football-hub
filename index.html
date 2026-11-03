@@ -754,7 +754,7 @@
             <h2>Match <span class="accent">Schedule</span></h2>
           </div>
 
-          <p>Upcoming games and recent results.</p>
+          <p>Football scores and match information.</p>
         </div>
 
         <div class="schedule-panel">
@@ -763,29 +763,24 @@
             <div>
               <strong>Football matches</strong>
               <div style="color: var(--muted); font-size: 13px;">
-                Demo matches are shown without an API.
+                Football data provided by Football Mania.
               </div>
-            </div>
-
-            <div>
-              <select id="competitionFilter" aria-label="Filter by competition">
-                <option value="all">All competitions</option>
-                <option value="Premier League">Premier League</option>
-                <option value="La Liga">La Liga</option>
-                <option value="Bundesliga">Bundesliga</option>
-                <option value="Serie A">Serie A</option>
-                <option value="Ligue 1">Ligue 1</option>
-                <option value="Champions League">Champions League</option>
-              </select>
-
-              <button class="refresh-button" id="refreshMatches">
-                ↻ Refresh
-              </button>
             </div>
           </div>
 
-          <div id="matches" class="match-list">
-            <div class="message">Loading match schedule…</div>
+          <div class="football-mania-widget">
+            <a
+              class="fm-widget"
+              href="https://football-mania.com/"
+              data-theme="dark"
+            >
+              Live football scores by Football Mania
+            </a>
+
+            <script
+              async
+              src="https://football-mania.com/widget.js">
+            </script>
           </div>
 
         </div>
@@ -881,191 +876,7 @@
     }
 
     renderRanking();
-
-    // MATCH SCHEDULE
-
-    const matchesContainer = document.getElementById("matches");
-    const competitionFilter = document.getElementById("competitionFilter");
-    const refreshButton = document.getElementById("refreshMatches");
-
-    const allMatches = [
-
-      {
-        homeTeam: "Real Madrid",
-        awayTeam: "Barcelona",
-        date: "2026-11-01T20:00:00Z",
-        competition: "La Liga",
-        status: "DEMO MATCH"
-      },
-
-      {
-        homeTeam: "Manchester City",
-        awayTeam: "Arsenal",
-        date: "2026-11-02T17:30:00Z",
-        competition: "Premier League",
-        status: "DEMO MATCH"
-      },
-
-      {
-        homeTeam: "Liverpool",
-        awayTeam: "Chelsea",
-        date: "2026-11-03T19:00:00Z",
-        competition: "Premier League",
-        status: "DEMO MATCH"
-      },
-
-      {
-        homeTeam: "Bayern Munich",
-        awayTeam: "Borussia Dortmund",
-        date: "2026-11-04T18:30:00Z",
-        competition: "Bundesliga",
-        status: "DEMO MATCH"
-      },
-
-      {
-        homeTeam: "Paris Saint-Germain",
-        awayTeam: "Marseille",
-        date: "2026-11-05T20:00:00Z",
-        competition: "Ligue 1",
-        status: "DEMO MATCH"
-      },
-
-      {
-        homeTeam: "Inter Milan",
-        awayTeam: "AC Milan",
-        date: "2026-11-06T19:45:00Z",
-        competition: "Serie A",
-        status: "DEMO MATCH"
-      }
-
-    ];
-
-    function escapeHTML(value) {
-      return String(value ?? "").replace(/[&<>"']/g, function (char) {
-
-        return {
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#39;"
-        }[char];
-
-      });
-    }
-
-    function formatDate(value) {
-      const date = new Date(value);
-
-      if (Number.isNaN(date.getTime())) {
-        return "Date unavailable";
-      }
-
-      return date.toLocaleString(undefined, {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-      });
-    }
-
-    function getClubLogo(teamName) {
-
-      const logos = {
-        "Real Madrid": "86",
-        "Barcelona": "81",
-        "FC Barcelona": "81",
-        "Manchester City": "65",
-        "Arsenal": "57",
-        "Liverpool": "64",
-        "Chelsea": "61",
-        "Bayern Munich": "5",
-        "Borussia Dortmund": "4",
-        "Paris Saint-Germain": "524",
-        "Marseille": "516",
-        "Inter Milan": "108",
-        "AC Milan": "98"
-      };
-
-      const id = logos[teamName];
-
-      return id
-        ? `https://crests.football-data.org/${id}.png`
-        : "";
-
-    }
-
-    function renderMatches() {
-
-      const selected = competitionFilter.value;
-
-      const filtered = allMatches.filter(function (match) {
-        return selected === "all" || match.competition === selected;
-      });
-
-      if (filtered.length === 0) {
-        matchesContainer.innerHTML =
-          '<div class="message">No matches for this competition.</div>';
-        return;
-      }
-
-      matchesContainer.innerHTML = filtered.map(function (match) {
-
-        return `
-          <article class="match">
-
-            <div class="match-meta">
-              <span>${escapeHTML(match.competition)}</span>
-              <span>${escapeHTML(formatDate(match.date))}</span>
-            </div>
-
-            <div class="match-teams">
-
-              <div class="team home">
-                <span>${escapeHTML(match.homeTeam)}</span>
-
-                <img
-                  class="team-logo"
-                  src="${getClubLogo(match.homeTeam)}"
-                  alt="${escapeHTML(match.homeTeam)} logo"
-                  onerror="this.style.visibility='hidden'"
-                >
-              </div>
-
-              <span class="score">VS</span>
-
-              <div class="team away">
-
-                <img
-                  class="team-logo"
-                  src="${getClubLogo(match.awayTeam)}"
-                  alt="${escapeHTML(match.awayTeam)} logo"
-                  onerror="this.style.visibility='hidden'"
-                >
-
-                <span>${escapeHTML(match.awayTeam)}</span>
-
-              </div>
-
-            </div>
-
-            <span class="status">
-              ${escapeHTML(match.status)}
-            </span>
-
-          </article>
-        `;
-
-      }).join("");
-
-    }
-
-    competitionFilter.addEventListener("change", renderMatches);
-    refreshButton.addEventListener("click", renderMatches);
-
-    renderMatches();
-
+    
   </script>
 
 </body>
