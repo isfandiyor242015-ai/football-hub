@@ -382,8 +382,20 @@
       font-size: 14px;
     }
 
+    .schedule-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
     .refresh-button {
       cursor: pointer;
+    }
+
+    .refresh-button:disabled {
+      opacity: 0.6;
+      cursor: wait;
     }
 
     .refresh-button:hover {
@@ -801,33 +813,39 @@
     <!-- MATCH SCHEDULE -->
 
     <section id="schedule">
-     <div class="schedule-panel">
-  <div class="schedule-top">
-    <h3>⚽ Match Schedule</h3>
-    <span>Upcoming Fixtures & Recent Results</span>
-  </div>
+      <div class="container">
+        <div class="schedule-panel">
+          <div class="schedule-top">
+            <div>
+              <h3>⚽ Match Schedule</h3>
+              <span>Fixtures & Recent Results</span>
+            </div>
 
-  <div class="match-list">
-    <a
-      class="fm-widget"
-      href="https://football-mania.com/fixtures/EnglandPremierLeague"
-      data-league="EnglandPremierLeague"
-      data-theme="dark"
-    >
-      Premier League live scores by Football Mania
-    </a>
-          <a
-      class="fm-widget"
-      href="https://football-mania.com/fixtures/SpainPrimeraDivision"
-      data-league="SpainPrimeraDivision"
-      data-theme="dark"
-    >
-      La Liga live scores by Football Mania
-    </a>
-  </div>
-</div>
+            <div class="schedule-controls">
+              <select id="competitionFilter" aria-label="Filter competition">
+                <option value="all">All Competitions</option>
+                <option value="Premier League">Premier League</option>
+                <option value="La Liga">La Liga</option>
+              </select>
+              <button id="refreshMatches" class="refresh-button" type="button">
+                ↻ Refresh
+              </button>
+            </div>
+          </div>
 
-<script async src="https://football-mania.com/widget.js"></script>
+          <div id="matchList" class="match-list">
+            <div class="message">Loading matches...</div>
+          </div>
+
+          <p class="ranking-note">
+            Match data:
+            <a href="https://github.com/oladeeayo/open-matchday"
+               target="_blank" rel="noopener noreferrer"
+               style="color: var(--lime);">open-matchday</a>
+            · Data is refreshed by the source daily. This is not live scoring.
+          </p>
+        </div>
+      </div>
     </section>
 <!-- RECENT TRANSFERS SECTION -->
 
@@ -1003,6 +1021,238 @@ async function loadTransfers() {
 }
 
 loadTransfers();
+
+    // AUTOMATIC MATCH SCHEDULE (no API key required)
+    // The public CSV files are updated daily by open-matchday.
+
+    const matchList = document.getElementById("matchList");
+    const competitionFilter = document.getElementById("competitionFilter");
+    const refreshMatches = document.getElementById("refreshMatches");
+
+    const matchSources = [
+      {
+        name: "Premier League",
+        folder: "ENG_1_premier-league"
+      },
+      {
+        name: "La Liga",
+        folder: "ESP_1_la-liga"
+      }
+    ];
+
+    const matchDataBase =
+      "https://cdn.jsdelivr.net/gh/oladeeayo/open-matchday@master/data/";
+
+    function parseCSV(text) {
+      const rows = [];
+      let row = [];
+      let value = "";
+      let insideQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const next = text[i + 1];
+
+        if (char === '"' && insideQuotes && next === '"') {
+          value += '"';
+          i++;
+        } else if (char === '"') {
+          insideQuotes = !insideQuotes;
+        } else if (char === "," && !insideQuotes) {
+          row.push(value);
+          value = "";
+        } else if ((char === "\n" || char === "\r") && !insideQuotes) {
+          if (char === "\r" && next === "\n") i++;
+          row.push(value);
+          if (row.some(cell => cell.trim() !== "")) rows.push(row);
+          row = [];
+          value = "";
+        } else {
+          value += char;
+        }
+      }
+
+      if (value.length || row.length) {
+        row.push(value);
+        rows.push(row);
+      }
+
+      if (!rows.length) return [];
+      const headers = rows.shift().map(header => header.trim());
+
+      return rows.map(cells => {
+        const item = {};
+        headers.forEach((header, index) => {
+          item[header] = (cells[index] || "").trim();
+        });
+        return item;
+      });
+    }
+
+    function escapeMatchText(value) {
+      return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[character]);
+    }
+
+    function displayMatchDate(date, time) {
+      if (!date) return "Date to be confirmed";
+      const parts = date.split("-");
+      const readableDate = parts.length === 3
+        ? `${parts[2]}.${parts[1]}.${parts[0]}`
+        : date;
+      return time ? `${readableDate} · ${time}` : readableDate;
+    }
+
+    async function fetchCSV(url) {
+      const response = await fetch(`${url}?refresh=${Date.now()}`, {
+        cache: "no-store"
+      });
+      if (!response.ok) {
+        throw new Error(`Could not load match data (${response.status})`);
+      }
+      return parseCSV(await response.text());
+    }
+
+    async function getLeagueMatches(league) {
+      const folderURL = `${matchDataBase}${league.folder}/`;
+      const [fixtures, results] = await Promise.all([
+        fetchCSV(`${folderURL}fixtures_2627.csv`),
+        fetchCSV(`${folderURL}results_2627.csv`)
+      ]);
+
+      const upcoming = fixtures.map(match => ({
+        ...match,
+        competition: league.name,
+        matchStatus: "UPCOMING",
+        score: "VS"
+      }));
+
+      const played = results
+        .filter(match => match.ft_home !== "" && match.ft_away !== "")
+        .map(match => ({
+          ...match,
+          competition: league.name,
+          matchStatus: "FULL TIME",
+          score: `${match.ft_home} - ${match.ft_away}`
+        }));
+
+      return { upcoming, played };
+    }
+
+    function createMatchCard(match) {
+      const card = document.createElement("article");
+      card.className = "match";
+
+      const meta = document.createElement("div");
+      meta.className = "match-meta";
+      meta.innerHTML = `
+        <span>${escapeMatchText(match.competition)}</span>
+        <span>${escapeMatchText(displayMatchDate(match.date, match.time))}</span>
+      `;
+
+      const teams = document.createElement("div");
+      teams.className = "match-teams";
+      teams.innerHTML = `
+        <span class="home">${escapeMatchText(match.home)}</span>
+        <span class="score">${escapeMatchText(match.score)}</span>
+        <span class="away">${escapeMatchText(match.away)}</span>
+      `;
+
+      const status = document.createElement("span");
+      status.className = "status";
+      status.textContent = match.matchStatus;
+
+      card.append(meta, teams, status);
+      return card;
+    }
+
+    function renderMatches(allMatches) {
+      const selectedCompetition = competitionFilter.value;
+      const filtered = selectedCompetition === "all"
+        ? allMatches
+        : allMatches.filter(match => match.competition === selectedCompetition);
+
+      matchList.innerHTML = "";
+
+      if (!filtered.length) {
+        matchList.innerHTML =
+          '<div class="message">No matches are available for this competition right now.</div>';
+        return;
+      }
+
+      const upcoming = filtered
+        .filter(match => match.matchStatus === "UPCOMING")
+        .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`))
+        .slice(0, 12);
+
+      const recent = filtered
+        .filter(match => match.matchStatus === "FULL TIME")
+        .sort((a, b) => `${b.date} ${b.time}`.localeCompare(`${a.date} ${a.time}`))
+        .slice(0, 5);
+
+      if (upcoming.length) {
+        const heading = document.createElement("h4");
+        heading.textContent = "Upcoming Matches";
+        heading.style.margin = "8px 0 4px";
+        matchList.appendChild(heading);
+        upcoming.forEach(match => matchList.appendChild(createMatchCard(match)));
+      }
+
+      if (recent.length) {
+        const heading = document.createElement("h4");
+        heading.textContent = "Recent Results";
+        heading.style.margin = "18px 0 4px";
+        matchList.appendChild(heading);
+        recent.forEach(match => matchList.appendChild(createMatchCard(match)));
+      }
+
+      if (!upcoming.length && !recent.length) {
+        matchList.innerHTML =
+          '<div class="message">No matches are available for this competition right now.</div>';
+      }
+    }
+
+    let cachedMatches = [];
+
+    async function loadMatches() {
+      refreshMatches.disabled = true;
+      refreshMatches.textContent = "Loading...";
+      matchList.innerHTML = '<div class="message">Loading match schedule...</div>';
+
+      try {
+        const leagueData = await Promise.all(
+          matchSources.map(league => getLeagueMatches(league))
+        );
+
+        cachedMatches = leagueData.flatMap(data => [
+          ...data.upcoming,
+          ...data.played
+        ]);
+
+        renderMatches(cachedMatches);
+      } catch (error) {
+        console.error("Match schedule error:", error);
+        matchList.innerHTML =
+          '<div class="message">Match data is temporarily unavailable. Please try again later.</div>';
+      } finally {
+        refreshMatches.disabled = false;
+        refreshMatches.textContent = "↻ Refresh";
+      }
+    }
+
+    refreshMatches.addEventListener("click", loadMatches);
+    competitionFilter.addEventListener("change", function () {
+      renderMatches(cachedMatches);
+    });
+
+    loadMatches();
+    // Refresh the displayed data every 6 hours. The source itself updates daily.
+    setInterval(loadMatches, 6 * 60 * 60 * 1000);
   </script>
 
 </body>
