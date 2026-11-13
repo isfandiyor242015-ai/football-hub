@@ -1178,14 +1178,16 @@ loadTransfers();
       return { upcoming, played };
     }
 
-    // Club crest IDs from football-data.org. Unknown teams get initials instead.
+    // Club crest IDs from football-data.org.
+    // Names are normalized so common variations (FC, CF, accents, punctuation) match too.
     const clubCrests = {
+      // Premier League
       "arsenal": 57,
       "aston villa": 58,
       "bournemouth": 1044,
       "brentford": 402,
       "brighton": 397,
-      "brighton & hove albion": 397,
+      "brighton hove albion": 397,
       "burnley": 328,
       "chelsea": 61,
       "crystal palace": 354,
@@ -1208,11 +1210,13 @@ loadTransfers();
       "west ham united": 563,
       "wolves": 76,
       "wolverhampton wanderers": 76,
+
+      // La Liga
       "alaves": 263,
       "athletic club": 77,
       "athletic bilbao": 77,
+      "athletic club bilbao": 77,
       "atletico madrid": 78,
-      "atlético madrid": 78,
       "barcelona": 81,
       "celta vigo": 558,
       "elche": 285,
@@ -1225,25 +1229,102 @@ loadTransfers();
       "rayo vallecano": 87,
       "real madrid": 86,
       "real sociedad": 92,
+      "real betis": 90,
+      "real betis balompie": 90,
       "sevilla": 559,
       "valencia": 95,
-      "villarreal": 94
+      "villarreal": 94,
+
+      // Bundesliga
+      "augsburg": 16,
+      "bayern munich": 5,
+      "bayern": 5,
+      "borussia dortmund": 4,
+      "dortmund": 4,
+      "borussia monchengladbach": 18,
+      "monchengladbach": 18,
+      "eintracht frankfurt": 19,
+      "frankfurt": 19,
+      "freiburg": 17,
+      "heidenheim": 44,
+      "hoffenheim": 2,
+      "mainz": 15,
+      "mainz 05": 15,
+      "rb leipzig": 721,
+      "leipzig": 721,
+      "stuttgart": 10,
+      "union berlin": 28,
+      "werder bremen": 12,
+      "bremen": 12,
+      "wolfsburg": 11,
+      "bayer leverkusen": 3,
+      "leverkusen": 3,
+
+      // Serie A
+      "atalanta": 102,
+      "bologna": 103,
+      "cagliari": 104,
+      "como": 739,
+      "fiorentina": 99,
+      "genoa": 107,
+      "inter": 108,
+      "internazionale": 108,
+      "juventus": 109,
+      "lazio": 110,
+      "lecce": 589,
+      "milan": 98,
+      "ac milan": 98,
+      "napoli": 113,
+      "parma": 112,
+      "roma": 100,
+      "as roma": 100,
+      "torino": 586,
+      "udinese": 115,
+      "verona": 450,
+      "hellas verona": 450,
+
+      // Ligue 1
+      "auxerre": 519,
+      "brest": 512,
+      "le havre": 533,
+      "lens": 546,
+      "lille": 521,
+      "lorient": 525,
+      "lyon": 523,
+      "olympique lyon": 523,
+      "marseille": 516,
+      "monaco": 548,
+      "montpellier": 518,
+      "nantes": 543,
+      "nice": 522,
+      "paris saint germain": 524,
+      "paris sg": 524,
+      "psg": 524,
+      "reims": 547,
+      "rennes": 529,
+      "strasbourg": 576,
+      "toulouse": 532
     };
 
     function normalizeClubName(name) {
       return String(name || "")
         .toLowerCase()
-        .replace(/\b(fc|cf|afc)\b/g, "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/&/g, " ")
+        .replace(/\b(fc|cf|afc|ac|as|sc|ssc|sv|rb|bvb)\b/g, " ")
+        .replace(/[^a-z0-9 ]/g, " ")
         .replace(/\s+/g, " ")
         .trim();
     }
 
     function createTeamMarkup(name, side) {
       const safeName = escapeMatchText(name);
+      const initials = escapeMatchText(String(name || "?").trim().slice(0, 2).toUpperCase());
       const crestId = clubCrests[normalizeClubName(name)];
       const logo = crestId
-        ? `<img class="team-logo" src="https://crests.football-data.org/${crestId}.png" alt="${safeName} logo" loading="lazy" onerror="this.outerHTML='<span class=\'team-fallback\'>${escapeMatchText(String(name).trim().slice(0, 2).toUpperCase())}</span>'">`
-        : `<span class="team-fallback">${escapeMatchText(String(name).trim().slice(0, 2).toUpperCase())}</span>`;
+        ? `<img class="team-logo" src="https://crests.football-data.org/${crestId}.png" alt="${safeName} logo" data-fallback="${initials}" loading="lazy">`
+        : `<span class="team-fallback">${initials}</span>`;
       const nameMarkup = `<span class="team-name">${safeName}</span>`;
       return side === "home"
         ? `<div class="team home">${nameMarkup}${logo}</div>`
@@ -1268,6 +1349,16 @@ loadTransfers();
         <span class="score">${escapeMatchText(match.score)}</span>
         ${createTeamMarkup(match.away, "away")}
       `;
+
+      // If a crest URL is unavailable, replace it with the club's initials.
+      teams.querySelectorAll(".team-logo").forEach(img => {
+        img.addEventListener("error", () => {
+          const fallback = document.createElement("span");
+          fallback.className = "team-fallback";
+          fallback.textContent = img.dataset.fallback || "?";
+          img.replaceWith(fallback);
+        }, { once: true });
+      });
 
       const status = document.createElement("span");
       status.className = "status";
