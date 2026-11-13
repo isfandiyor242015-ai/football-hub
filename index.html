@@ -979,7 +979,7 @@
               <img
                 src="https://crests.football-data.org/${club.logo}.png"
                 alt="${club.name} logo"
-                onerror="this.style.visibility='hidden'"
+                onerror="this.replaceWith(Object.assign(document.createElement('span'), {className:'team-fallback', textContent:'${club.name.slice(0,2).toUpperCase()}'}))"
               >
               <span>${club.name}</span>
             </div>
@@ -1311,20 +1311,58 @@ loadTransfers();
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
-        .replace(/&/g, " ")
-        .replace(/\b(fc|cf|afc|ac|as|sc|ssc|sv|rb|bvb)\b/g, " ")
+        .replace(/&/g, " and ")
+        // Remove only generic club words. Keep AC, AS and RB because
+        // they are part of names such as AC Milan, AS Roma and RB Leipzig.
+        .replace(/\b(fc|cf|afc|ssc|sc|sv)\b/g, " ")
         .replace(/[^a-z0-9 ]/g, " ")
         .replace(/\s+/g, " ")
         .trim();
     }
 
+    // Common spellings used by different fixture feeds.
+    const clubCrestAliases = {
+      "man utd": 66,
+      "man united": 66,
+      "manchester utd": 66,
+      "manchester united": 66,
+      "man city": 65,
+      "brighton and hove albion": 397,
+      "brighton hove": 397,
+      "west ham utd": 563,
+      "newcastle utd": 67,
+      "spurs": 73,
+      "wolves": 76,
+      "notts forest": 351,
+      "athletic club de bilbao": 77,
+      "athletic bilbao": 77,
+      "atletico de madrid": 78,
+      "celta de vigo": 558,
+      "real betis balompie": 90,
+      "ac milan": 98,
+      "as roma": 100,
+      "bvb": 4,
+      "borussia mgladbach": 18,
+      "gladbach": 18,
+      "rb leipzig": 721,
+      "paris sg": 524,
+      "paris saint germain": 524,
+      "olympique marseille": 516,
+      "olympique lyonnais": 523
+    };
+
+    function getClubCrestId(name) {
+      const normalized = normalizeClubName(name);
+      return clubCrests[normalized] || clubCrestAliases[normalized] || null;
+    }
+
     function createTeamMarkup(name, side) {
       const safeName = escapeMatchText(name);
       const initials = escapeMatchText(String(name || "?").trim().slice(0, 2).toUpperCase());
-      const crestId = clubCrests[normalizeClubName(name)];
+      const crestId = getClubCrestId(name);
       const logo = crestId
         ? `<img class="team-logo" src="https://crests.football-data.org/${crestId}.png" alt="${safeName} logo" data-fallback="${initials}" loading="lazy">`
-        : `<span class="team-fallback">${initials}</span>`;
+        : `<span class="team-fallback" title="Club logo unavailable">${initials}</span>`;
       const nameMarkup = `<span class="team-name">${safeName}</span>`;
       return side === "home"
         ? `<div class="team home">${nameMarkup}${logo}</div>`
