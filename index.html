@@ -824,34 +824,40 @@
 
     <!-- TOP RANKING SECTION -->
 
-    <section id="ranking" class="ranking-section">
-      <div class="container">
+<section id="ranking" class="ranking-section">
+  <div class="container">
 
-        <div class="section-heading">
-          <div>
-            <span class="eyebrow">CLUB RANKINGS</span>
-            <h2>Top-Ranked <span class="accent">Clubs</span></h2>
-          </div>
-
-          <p>Manually updated club ranking.</p>
-        </div>
-
-        <div id="rankingList" class="ranking-list"></div>
-
-        <p class="ranking-note">
-          This is a manually maintained starter list, not live official data.
-          Check the official UEFA ranking and update the order yourself:
-          <a href="https://www.uefa.com/nationalassociations/uefarankings/club/"
-             target="_blank"
-             rel="noopener noreferrer"
-             style="color: var(--lime);">
-            UEFA Club Rankings
-          </a>
-        </p>
-
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">CLUB RANKINGS</span>
+        <h2>Top-Ranked <span class="accent">Clubs</span></h2>
       </div>
-    </section>
 
+      <p>Official UEFA five-season club ranking.</p>
+    </div>
+
+    <div id="rankingList" class="ranking-list">
+      <p class="message">Loading UEFA ranking...</p>
+    </div>
+
+    <p id="rankingUpdated" class="ranking-note">
+      Loading update information...
+    </p>
+
+    <p class="ranking-note">
+      Ranking based on UEFA club coefficients.
+      Source:
+      <a href="https://www.uefa.com/nationalassociations/uefarankings/club/"
+         target="_blank"
+         rel="noopener noreferrer"
+         style="color: var(--lime);">
+        Official UEFA Club Rankings
+      </a>
+    </p>
+
+  </div>
+</section>
+    
     <!-- COMPETITIONS SECTION -->
 
     <section id="competitions" class="competitions">
